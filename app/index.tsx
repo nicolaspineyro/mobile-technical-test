@@ -1,41 +1,41 @@
 import React from 'react';
-import { 
-  View, 
-  Text, 
-  StyleSheet,
-  StatusBar,
-  Pressable
-} from 'react-native';
+import { View, Text, StyleSheet, StatusBar, Pressable } from 'react-native';
 
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { hapticImpact } from '@/utils/haptics';
 import { ImpactFeedbackStyle } from 'expo-haptics';
+import { useSSEStream } from '@/hooks/useSSEStream';
+import { SSEEvent } from '@/types/chat.types';
 
 export default function ChatScreen() {
   const insets = useSafeAreaInsets();
 
+  useSSEStream({
+    url: process.env.EXPO_PUBLIC_SSE_URL || '',
+    onEvent: (event: SSEEvent) => {
+      console.log('event in', event);
+    },
+    onError: (error: Error) => {
+      console.error('stream error:', error);
+    },
+    onConnectionChange: (connected: boolean) => {
+      console.log('connected', connected);
+    },
+  });
+
   return (
     <View style={styles.container}>
-      <StatusBar barStyle="dark-content" />
-
-      <View style={styles.content}>
-
-      </View>
-
-      <View
-        style={[
-          styles.controls,
-          { paddingBottom: insets.bottom },
-        ]}
-      >
+      <StatusBar barStyle='dark-content' />
+      <View style={styles.content}></View>
+      <View style={[styles.controls, { paddingBottom: insets.bottom }]}>
         <Pressable
-          style={({ pressed }) => [styles.button, pressed && styles.buttonPressed]}
-          onPress={() => {}}
+          style={({ pressed }) => [
+            styles.button,
+            pressed && styles.buttonPressed,
+          ]}
           onPressIn={() => hapticImpact(ImpactFeedbackStyle.Light)}
         >
-          <Text style={styles.buttonText}>
-            Start Stream
-          </Text>
+          <Text style={styles.buttonText}>Start Stream</Text>
         </Pressable>
       </View>
     </View>
