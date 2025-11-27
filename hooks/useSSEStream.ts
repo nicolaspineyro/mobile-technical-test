@@ -58,7 +58,7 @@ export function useSSEStream({
     eventTypes.forEach((eventType) => {
       eventSource.addEventListener(eventType, (event: any) => {
         try {
-          const data = event.data as SSEEvent;
+          const data = JSON.parse(event.data) as SSEEvent;
           onEvent?.(data);
         } catch (error) {
           console.error('failed to get event', error);

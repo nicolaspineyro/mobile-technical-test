@@ -4,24 +4,13 @@ import { View, Text, StyleSheet, StatusBar, Pressable } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { hapticImpact } from '@/utils/haptics';
 import { ImpactFeedbackStyle } from 'expo-haptics';
-import { useSSEStream } from '@/hooks/useSSEStream';
-import { SSEEvent } from '@/types/chat.types';
+import { useChat } from '@/hooks/useChat';
 
 export default function ChatScreen() {
   const insets = useSafeAreaInsets();
+  const { messages, isConnected, error, reconnect, reset } = useChat();
 
-  useSSEStream({
-    url: process.env.EXPO_PUBLIC_SSE_URL || '',
-    onEvent: (event: SSEEvent) => {
-      console.log('event in', event);
-    },
-    onError: (error: Error) => {
-      console.error('stream error:', error);
-    },
-    onConnectionChange: (connected: boolean) => {
-      console.log('connected', connected);
-    },
-  });
+  console.log(messages, isConnected, error);
 
   return (
     <View style={styles.container}>

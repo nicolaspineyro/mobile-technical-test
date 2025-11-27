@@ -8,7 +8,7 @@ export type SSEEventType =
 
 export type MessageRole = 'user' | 'agent';
 
-export type ComponentType = 'contact_badge' | 'calendar_event';
+export type ChatComponentType = 'contact_badge' | 'calendar_event';
 
 export type SSEEvent =
   | MessageStartEvent
@@ -37,9 +37,9 @@ export interface MessageEndEvent {
 }
 
 export interface ComponentStartEvent {
-  event: 'event_start';
+  event: 'component_start';
   messageId: string;
-  componentType: ComponentType;
+  componentType: ChatComponentType;
 }
 
 export interface ComponentFieldEvent {
@@ -50,6 +50,42 @@ export interface ComponentFieldEvent {
 }
 
 export interface ComponentEndEvent {
-  event: 'event_end';
+  event: 'component_end';
   messageId: string;
+}
+
+export interface ContactBadgeFields {
+  name: string;
+  email: string;
+  company: string;
+  profilePicture: string;
+}
+
+export interface CalendarEventFields {
+  title: string;
+  date: string;
+  time: string;
+  status: 'PROPOSED' | 'CONFIRMED' | 'CANCELED';
+}
+export interface ComponentData {
+  type: ChatComponentType;
+  fields: Partial<ContactBadgeFields | CalendarEventFields>;
+  fieldsReceived: string[];
+  isComplete: boolean;
+}
+
+export type MessageStatus = 'building' | 'complete';
+export interface Message {
+  id: string;
+  role: MessageRole;
+  status: MessageStatus;
+  textContent: string;
+  component?: ComponentData;
+  timeStamp: number;
+}
+
+export interface ChatState {
+  messages: Message[];
+  isConnected: boolean;
+  error: string | null;
 }
