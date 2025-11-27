@@ -26,7 +26,7 @@ export function chatReducer(state: ChatState, action: ChatAction): ChatState {
             textContent: '',
             timeStamp: Date.now(),
           };
-          console.log('message start', newMessage);
+
           return {
             ...state,
             messages: [...state.messages, newMessage],
@@ -37,7 +37,6 @@ export function chatReducer(state: ChatState, action: ChatAction): ChatState {
             ...state,
             messages: state.messages.map((message) => {
               if (message.id !== event.messageId) return message;
-              console.log('message chunk', message);
               return {
                 ...message,
                 textContent: message.textContent + event.chunk,
@@ -51,7 +50,6 @@ export function chatReducer(state: ChatState, action: ChatAction): ChatState {
             ...state,
             messages: state.messages.map((message) => {
               if (message.id !== event.messageId) return message;
-              console.log('message end');
               return {
                 ...message,
                 status: 'complete',
