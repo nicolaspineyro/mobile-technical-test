@@ -33,7 +33,7 @@ export function useChat() {
     dispatch({ type: 'RESET' });
   }, []);
 
-  const { reconnect } = useSSEStream({
+  const { reconnect, disconnect } = useSSEStream({
     url: SSE_URL,
     onEvent: handleEvent,
     onError: handleError,
@@ -45,6 +45,7 @@ export function useChat() {
     isConnected: state.isConnected,
     error: state.error,
     reconnect,
+    disconnect,
     reset,
   };
 }

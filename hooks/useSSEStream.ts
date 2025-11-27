@@ -76,8 +76,6 @@ export function useSSEStream({
   }, [autoReconnect, disconnect, onConnectionChange, onError, onEvent, url]);
 
   useEffect(() => {
-    connect();
-
     return () => disconnect();
   }, [connect, disconnect]);
 
@@ -97,5 +95,5 @@ export function useSSEStream({
     };
   }, [connect, disconnect]);
 
-  return { reconnect: connect };
+  return { reconnect: connect, disconnect };
 }

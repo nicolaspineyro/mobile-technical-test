@@ -2,6 +2,7 @@ import React from 'react';
 import { ContactBadgeFields } from '@/types/chat.types';
 import { Text, View, StyleSheet } from 'react-native';
 import { Image } from 'expo-image';
+import { colors, radius, shadows, spacing, typography } from '@/theme/tokens';
 
 interface ContactBadgeProps {
   data: Partial<ContactBadgeFields>;
@@ -17,7 +18,7 @@ const ContactBadge = ({ data }: ContactBadgeProps) => {
         contentFit='cover'
         transition={200}
       />
-      <View>
+      <View style={styles.content}>
         <Text style={styles.name}>{name}</Text>
         <Text style={styles.email}>{email}</Text>
         <Text style={styles.company}>{company}</Text>
@@ -29,39 +30,52 @@ const ContactBadge = ({ data }: ContactBadgeProps) => {
 const styles = StyleSheet.create({
   container: {
     flexDirection: 'row',
-    backgroundColor: '#F8F9FA',
-    borderRadius: 12,
-    padding: 16,
-    marginTop: 8,
+    backgroundColor: colors.cardBackground,
+    borderRadius: radius.lg,
+    padding: spacing.lg,
     borderWidth: 1,
-    borderColor: '#E9ECEF',
-    gap: 20,
+    borderColor: colors.cardBorder,
+    marginTop: spacing.md,
+    gap: spacing.lg,
+    ...shadows.md,
   },
+
+  content: {
+    flex: 1,
+    flexDirection: 'column',
+    justifyContent: 'center',
+  },
+
   avatar: {
     width: 56,
     height: 56,
-    borderRadius: 28,
-    backgroundColor: '#DEE2E6',
+    borderRadius: radius.full,
+    backgroundColor: colors.backgroundSecondary,
   },
+
   info: {
-    marginLeft: 12,
     flex: 1,
     justifyContent: 'center',
   },
+
   name: {
-    fontSize: 16,
-    fontWeight: '600',
-    color: '#212529',
-    marginBottom: 4,
+    fontSize: typography.lg,
+    fontWeight: typography.semibold,
+    color: colors.textPrimary,
+    marginBottom: spacing.xs,
   },
+
   email: {
-    fontSize: 14,
-    color: '#6C757D',
-    marginBottom: 2,
+    fontSize: typography.sm,
+    fontWeight: typography.regular,
+    color: colors.textSecondary,
+    marginBottom: spacing.xs,
   },
+
   company: {
-    fontSize: 14,
-    color: '#868E96',
+    fontSize: typography.sm,
+    fontWeight: typography.medium,
+    color: colors.textTertiary,
   },
 });
 

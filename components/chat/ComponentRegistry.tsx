@@ -4,9 +4,9 @@ import {
   ContactBadgeFields,
 } from '@/types/chat.types';
 import React from 'react';
-import { Text, View, StyleSheet } from 'react-native';
 import ContactBadge from './ContactBadge';
 import CalendarEvent from './CalendarEvent';
+import Skeleton from './Skeleton';
 
 interface DynamicComponentProps {
   type: ChatComponentType;
@@ -25,37 +25,12 @@ const DynamicComponent = ({
   isComplete,
 }: DynamicComponentProps) => {
   if (!isComplete) {
-    return (
-      <View style={styles.loadingContainer}>
-        <View style={styles.loadingBar} />
-        <Text style={styles.loadingText}>Loading {type}...</Text>
-      </View>
-    );
+    return <Skeleton />;
   }
 
   const Component = ComponentRegistry[type];
 
   return <Component data={fields} />;
 };
-
-const styles = StyleSheet.create({
-  loadingContainer: {
-    backgroundColor: '#F8F9FA',
-    borderRadius: 12,
-    padding: 16,
-    marginTop: 8,
-  },
-  loadingBar: {
-    height: 4,
-    backgroundColor: '#E9ECEF',
-    borderRadius: 2,
-    marginBottom: 8,
-  },
-  loadingText: {
-    fontSize: 14,
-    color: '#ADB5BD',
-    fontStyle: 'italic',
-  },
-});
 
 export default DynamicComponent;

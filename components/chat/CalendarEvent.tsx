@@ -1,6 +1,7 @@
 import React from 'react';
 import { CalendarEventFields } from '@/types/chat.types';
 import { Text, StyleSheet, View } from 'react-native';
+import { colors, radius, shadows, spacing, typography } from '@/theme/tokens';
 
 interface CalendarEventProps {
   data: Partial<CalendarEventFields>;
@@ -38,8 +39,8 @@ const CalendarEvent = ({ data }: CalendarEventProps) => {
         </View>
       </View>
 
-      <View style={[styles.statusBadge, { backgroundColor: statusStyle.bg }]}>
-        <Text style={[styles.statusText, { color: statusStyle.color }]}>
+      <View style={[styles.badge, { backgroundColor: statusStyle.bg }]}>
+        <Text style={[styles.badgeText, { color: statusStyle.color }]}>
           {statusStyle.label}
         </Text>
       </View>
@@ -49,55 +50,65 @@ const CalendarEvent = ({ data }: CalendarEventProps) => {
 
 const styles = StyleSheet.create({
   container: {
-    backgroundColor: '#F8F9FA',
-    borderRadius: 12,
-    padding: 16,
-    marginTop: 8,
+    backgroundColor: colors.cardBackground,
+    borderRadius: radius.lg,
+    padding: spacing.lg,
     borderWidth: 1,
-    borderColor: '#E9ECEF',
+    borderColor: colors.cardBorder,
+    marginTop: spacing.md,
+    ...shadows.md,
   },
+
   header: {
     flexDirection: 'row',
     alignItems: 'center',
-    marginBottom: 12,
+    marginBottom: spacing.md,
   },
+
   icon: {
-    fontSize: 24,
-    marginRight: 8,
+    fontSize: 22,
+    marginRight: spacing.sm,
   },
+
   title: {
-    fontSize: 16,
-    fontWeight: 600,
-    color: '#212529',
+    fontSize: typography.lg,
+    fontWeight: typography.semibold,
+    color: colors.textPrimary,
     flex: 1,
   },
+
   details: {
-    marginBottom: 16,
+    marginBottom: spacing.lg,
   },
+
   detailRow: {
     flexDirection: 'row',
     alignItems: 'center',
-    marginBottom: 10,
+    marginBottom: spacing.sm,
   },
+
   detailIcon: {
     fontSize: 16,
-    marginRight: 8,
+    marginRight: spacing.xs,
     width: 20,
   },
+
   detailText: {
-    fontSize: 14,
-    color: '#495057',
+    fontSize: typography.base,
+    fontWeight: typography.regular,
+    color: colors.textSecondary,
   },
-  statusBadge: {
+
+  badge: {
     alignSelf: 'flex-start',
-    paddingHorizontal: 12,
-    paddingVertical: 6,
-    borderRadius: 16,
+    paddingHorizontal: spacing.md,
+    paddingVertical: spacing.xs,
+    borderRadius: radius.full,
   },
-  statusText: {
-    fontSize: 12,
-    fontWeight: '600',
-    textTransform: 'uppercase',
+
+  badgeText: {
+    fontSize: typography.xs,
+    fontWeight: typography.semibold,
   },
 });
 

@@ -1,4 +1,4 @@
-import React, { useEffect, useRef } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { View, Text, StyleSheet, StatusBar, Pressable } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { FlashList, FlashListRef } from '@shopify/flash-list';
@@ -10,37 +10,54 @@ import { hapticImpact } from '@/utils/haptics';
 import { useChat } from '@/hooks/useChat';
 
 import MessageBubble from '@/components/chat/MessageBubble';
+import { colors, radius, spacing, typography } from '@/theme/tokens';
+import { ChatHeader } from '@/components/chat/ChatHeader';
 
 export default function ChatScreen() {
   const insets = useSafeAreaInsets();
-  const { messages, isConnected, error, reconnect, reset } = useChat();
+  const { messages, isConnected, error, reconnect, reset, disconnect } =
+    useChat();
   const flashListRef = useRef<FlashListRef<Message>>(null);
+  const [isAtBottom, setIsAtBottom] = useState(true);
 
   const renderMessages = ({ item }: { item: Message }) => {
     return <MessageBubble item={item} />;
   };
 
+  const handleScroll = (e: any) => {
+    const { contentOffset, contentSize, layoutMeasurement } = e.nativeEvent;
+
+    const distanceFromBottom =
+      contentSize.height - (contentOffset.y + layoutMeasurement.height);
+
+    setIsAtBottom(distanceFromBottom < 50);
+  };
+
   useEffect(() => {
-    if (messages.length > 0) {
+    if (messages.length > 0 && isAtBottom) {
       setTimeout(() => {
         flashListRef.current?.scrollToEnd({ animated: true });
       }, 100);
     }
-  }, [messages.length]);
+  }, [isAtBottom, messages.length]);
 
   return (
-    <View style={styles.container}>
+    <View style={[styles.container, { paddingTop: insets.top }]}>
       <StatusBar barStyle='dark-content' />
-      <View style={styles.content}>
-        <FlashList
-          ref={flashListRef}
-          contentContainerStyle={styles.listContent}
-          data={messages}
-          renderItem={renderMessages}
-          keyExtractor={(item) => item.id}
-          showsVerticalScrollIndicator={false}
-        />
-      </View>
+      <ChatHeader isConnected={isConnected} error={error} />
+
+      <FlashList
+        ref={flashListRef}
+        onScroll={handleScroll}
+        contentContainerStyle={styles.listContent}
+        scrollEventThrottle={16}
+        data={messages}
+        renderItem={renderMessages}
+        keyExtractor={(item) => item.id}
+        showsVerticalScrollIndicator={false}
+        style={styles.listContent}
+      />
+
       <View style={[styles.controls, { paddingBottom: insets.bottom }]}>
         <Pressable
           style={({ pressed }) => [
@@ -55,6 +72,18 @@ export default function ChatScreen() {
         >
           <Text style={styles.buttonText}>Start Stream</Text>
         </Pressable>
+        <Pressable
+          style={({ pressed }) => [
+            styles.buttonSecondary,
+            pressed && styles.buttonPressed,
+          ]}
+          onPress={() => {
+            disconnect();
+          }}
+          onPressIn={() => hapticImpact(ImpactFeedbackStyle.Light)}
+        >
+          <Text style={styles.buttonText}>Stop Stream</Text>
+        </Pressable>
       </View>
     </View>
   );
@@ -62,39 +91,48 @@ export default function ChatScreen() {
 
 const styles = StyleSheet.create({
   container: {
-    width: '100%',
     flex: 1,
-  },
-  content: {
-    width: '100%',
-    flex: 1,
-  },
-  controls: {
-    padding: 16,
-    backgroundColor: '#fff',
-    borderWidth: 1,
-    borderBottomWidth: 0,
-    borderColor: '#e0e0e0',
-    borderRadius: 16,
-  },
-  button: {
-    backgroundColor: '#FFE016',
-    paddingVertical: 12,
-    paddingHorizontal: 24,
-    borderRadius: 8,
-    alignItems: 'center',
-    marginBottom: 8,
-  },
-  buttonPressed: {
-    transform: [{ translateY: 1 }],
-    opacity: 0.8,
-  },
-  buttonText: {
-    color: '#002C2A',
-    fontSize: 16,
-    fontWeight: '600',
+    backgroundColor: colors.background,
   },
   listContent: {
-    paddingVertical: 20,
+    paddingHorizontal: spacing.lg,
+    marginTop: spacing['3xl'],
+  },
+  controls: {
+    backgroundColor: colors.cardBackground,
+    borderWidth: 1,
+    borderColor: colors.cardBorder,
+    padding: spacing.lg,
+    borderBottomWidth: 0,
+    borderRadius: radius.lg,
+  },
+  button: {
+    backgroundColor: colors.primary,
+    paddingVertical: spacing.md,
+    borderRadius: radius.md,
+    alignItems: 'center',
+    marginBottom: spacing.sm,
+  },
+  buttonText: {
+    fontSize: typography.base,
+    fontWeight: typography.semibold,
+  },
+  buttonSecondary: {
+    backgroundColor: colors.agentBubble,
+    color: 'red',
+    paddingVertical: spacing.md,
+    borderRadius: radius.md,
+    alignItems: 'center',
+    borderWidth: 1,
+    borderColor: colors.cardBorder,
+  },
+  buttonSecondaryText: {
+    color: colors.textPrimary,
+    fontSize: typography.base,
+    fontWeight: typography.medium,
+  },
+
+  buttonPressed: {
+    opacity: 0.8,
   },
 });
