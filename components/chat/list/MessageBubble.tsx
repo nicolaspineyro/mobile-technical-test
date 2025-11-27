@@ -1,6 +1,6 @@
 import { Message } from '@/types/chat.types';
 import React, { useEffect } from 'react';
-import { View, StyleSheet } from 'react-native';
+import { Text, View, StyleSheet } from 'react-native';
 import Animated, {
   FadeInDown,
   useAnimatedStyle,
@@ -17,19 +17,26 @@ interface MessageBubbleProps {
 
 const MessageBubble = ({ item }: MessageBubbleProps) => {
   const { textContent, component, status } = item;
-  const dynamicComponenOpacity = useSharedValue(0);
-
   const isUser = item.role === 'user';
+  const isComponentBuilding =
+    status === 'building' && !!component && !component.isComplete && !isUser;
+
+  const dynamicComponenOpacity = useSharedValue(0);
+  const pulse = useSharedValue(0.3);
+
+  const dynamicComponentStyle = useAnimatedStyle(() => ({
+    opacity: dynamicComponenOpacity.value,
+  }));
+
+  const pulseStyle = useAnimatedStyle(() => ({
+    opacity: pulse.value,
+  }));
 
   useEffect(() => {
     if (component?.isComplete) {
       dynamicComponenOpacity.value = withTiming(1, { duration: 400 });
     }
   }, [component?.isComplete, dynamicComponenOpacity]);
-
-  const dynamicComponentStyle = useAnimatedStyle(() => ({
-    opacity: dynamicComponenOpacity.value,
-  }));
 
   return (
     <Animated.View
@@ -40,11 +47,16 @@ const MessageBubble = ({ item }: MessageBubbleProps) => {
         style={[styles.bubble, isUser ? styles.userBubble : styles.agentBubble]}
       >
         {textContent && (
-          <Animated.Text
+          <Text
             style={[styles.text, isUser ? styles.userText : styles.agentText]}
           >
             {textContent}
-          </Animated.Text>
+          </Text>
+        )}
+        {isComponentBuilding && (
+          <View style={styles.loadingContainer}>
+            <Animated.View style={[styles.loadingDot, pulseStyle]} />
+          </View>
         )}
 
         {component && (
@@ -74,22 +86,18 @@ const styles = StyleSheet.create({
   },
 
   bubble: {
-    maxWidth: '80%',
     padding: spacing.md,
     borderRadius: radius.lg,
   },
 
   userBubble: {
+    maxWidth: '80%',
     backgroundColor: colors.userBubble,
-    borderBottomRightRadius: radius.sm,
+    borderBottomRightRadius: radius.xs,
   },
   agentBubble: {
-    backgroundColor: colors.agentBubble,
-    borderBottomLeftRadius: radius.sm,
-    borderWidth: 1,
-    borderColor: colors.cardBorder,
+    width: '100%',
   },
-
   text: {
     fontSize: typography.base,
     lineHeight: typography.base * typography.lineHeight.normal,
@@ -101,6 +109,25 @@ const styles = StyleSheet.create({
   agentText: {
     color: colors.textPrimary,
   },
+  loadingContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 6,
+    padding: 8,
+  },
+  loadingDot: {
+    width: 8,
+    height: 8,
+    borderRadius: 4,
+    backgroundColor: '#666',
+  },
 });
 
-export default MessageBubble;
+export default React.memo(MessageBubble, (prevProps, nextProps) => {
+  return (
+    prevProps.item.textContent === nextProps.item.textContent &&
+    prevProps.item.status === nextProps.item.status &&
+    prevProps.item.component?.isComplete ===
+      nextProps.item.component?.isComplete
+  );
+});

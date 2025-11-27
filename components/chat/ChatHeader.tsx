@@ -1,7 +1,7 @@
 import { colors, spacing, typography } from '@/theme/tokens';
 import { BlurView } from 'expo-blur';
 import React from 'react';
-import { View, Text, StyleSheet } from 'react-native';
+import { View, Text, StyleSheet, Platform } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 interface ChatHeaderProps {
@@ -15,7 +15,13 @@ export function ChatHeader({ isConnected, error }: ChatHeaderProps) {
   return (
     <BlurView
       tint='light'
-      style={[styles.container, { paddingTop: insets.top }]}
+      style={[
+        styles.container,
+        { paddingTop: insets.top },
+      ]}
+      experimentalBlurMethod={
+        Platform.OS === 'android' ? 'dimezisBlurView' : 'none'
+      }
     >
       <View style={styles.content}>
         <Text style={styles.title}>The Mobile First Company</Text>

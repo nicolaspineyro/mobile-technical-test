@@ -4,7 +4,7 @@ export const colors = {
   primaryLight: '#818CF8',
 
   // Backgrounds
-  background: '#FAFAFA',
+  background: '#F9F8F6',
   backgroundSecondary: '#F9FAFB',
 
   // Text
@@ -26,7 +26,7 @@ export const colors = {
   error: '#EF4444',
 
   // Accents
-  accent: '#EC4899',
+  accent: '#FFC5D3',
 };
 
 export const typography = {
@@ -62,6 +62,7 @@ export const spacing = {
 };
 
 export const radius = {
+  xs: 4,
   sm: 8,
   md: 12,
   lg: 16,
