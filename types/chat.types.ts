@@ -80,6 +80,7 @@ export interface Message {
   role: MessageRole;
   status: MessageStatus;
   textContent: string;
+  textChunks?: Record<number, string>;
   component?: ComponentData;
   timeStamp: number;
 }

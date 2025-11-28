@@ -6,7 +6,7 @@ import { Entypo, FontAwesome, MaterialIcons } from '@expo/vector-icons';
 import { format, parseISO } from 'date-fns';
 import { hapticImpact } from '@/utils/haptics';
 import { ImpactFeedbackStyle } from 'expo-haptics';
-import CalendarBottomSheet from '@/components/ui/CalendarBottomSheet';
+import CalendarBottomSheet from '@/components/ui/bottom-sheet/CalendarBottomSheet';
 import Card from '@/components/ui/Card';
 interface CalendarEventProps {
   data: Partial<CalendarEventFields>;

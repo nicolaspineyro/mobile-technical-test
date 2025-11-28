@@ -133,7 +133,7 @@ const ContactBottomSheet = ({
           icon={<Feather name='share' size={24} color={colors.warning} />}
           iconBackgroundColor='#FFF3E0'
           title='Share Contact'
-          subtitle='Send to others'
+          subtitle='Share contact with other people'
           onPress={shareContact}
         />
       </View>

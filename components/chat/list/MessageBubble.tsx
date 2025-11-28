@@ -96,14 +96,8 @@ const styles = StyleSheet.create({
   agentText: {
     fontFamily: 'PlayfairDisplay-Medium',
     color: colors.textPrimary,
+    paddingHorizontal: spacing.md,
   },
 });
 
-export default React.memo(MessageBubble, (prevProps, nextProps) => {
-  return (
-    prevProps.item.textContent === nextProps.item.textContent &&
-    prevProps.item.status === nextProps.item.status &&
-    prevProps.item.component?.isComplete ===
-      nextProps.item.component?.isComplete
-  );
-});
+export default React.memo(MessageBubble);

@@ -13,6 +13,30 @@ export const initialChatState: ChatState = {
   error: null,
 };
 
+function validateMessageExists(
+  state: ChatState,
+  messageId: string,
+  eventType: string,
+  event: SSEEvent
+): boolean {
+  const messageExists = state.messages.some((m) => m.id === messageId);
+  if (!messageExists) {
+    console.error(
+      `[ChatReducer] ${eventType} received for unknown message: ${messageId}`,
+      { event }
+    );
+  }
+  return messageExists;
+}
+
+function buildTextFromChunks(chunks: Record<number, string>): string {
+  const sortedIndices = Object.keys(chunks)
+    .map(Number)
+    .sort((a, b) => a - b);
+
+  return sortedIndices.map((index) => chunks[index]).join('');
+}
+
 export function chatReducer(state: ChatState, action: ChatAction): ChatState {
   switch (action.type) {
     case 'EVENT_RECEIVED': {
@@ -24,6 +48,7 @@ export function chatReducer(state: ChatState, action: ChatAction): ChatState {
             role: event.role,
             status: 'building',
             textContent: '',
+            textChunks: {},
             timeStamp: Date.now(),
           };
 
@@ -33,19 +58,40 @@ export function chatReducer(state: ChatState, action: ChatAction): ChatState {
           };
         }
         case 'text_chunk': {
+          if (
+            !validateMessageExists(state, event.messageId, 'text_chunk', event)
+          ) {
+            return state;
+          }
+
           return {
             ...state,
             messages: state.messages.map((message) => {
               if (message.id !== event.messageId) return message;
+
+              const updatedChunks = {
+                ...(message.textChunks ?? {}),
+                [event.index]: event.chunk,
+              };
+
+              const textContent = buildTextFromChunks(updatedChunks);
+
               return {
                 ...message,
-                textContent: message.textContent + event.chunk,
+                textChunks: updatedChunks,
+                textContent,
               };
             }),
           };
         }
 
         case 'message_end': {
+          if (
+            !validateMessageExists(state, event.messageId, 'message_end', event)
+          ) {
+            return state;
+          }
+
           return {
             ...state,
             messages: state.messages.map((message) => {
@@ -59,6 +105,17 @@ export function chatReducer(state: ChatState, action: ChatAction): ChatState {
         }
 
         case 'component_start': {
+          if (
+            !validateMessageExists(
+              state,
+              event.messageId,
+              'component_start',
+              event
+            )
+          ) {
+            return state;
+          }
+
           return {
             ...state,
             messages: state.messages.map((message) => {
@@ -78,12 +135,29 @@ export function chatReducer(state: ChatState, action: ChatAction): ChatState {
         }
 
         case 'component_field': {
+          if (
+            !validateMessageExists(
+              state,
+              event.messageId,
+              'component_field',
+              event
+            )
+          ) {
+            return state;
+          }
+
           return {
             ...state,
             messages: state.messages.map((message) => {
               if (message.id !== event.messageId) return message;
 
-              if (!message.component?.type) return message;
+              if (!message.component?.type) {
+                console.error(
+                  `[ChatReducer] component_field received but message has no component: ${event.messageId}`,
+                  { event }
+                );
+                return message;
+              }
 
               const updatedFieldsReceived = [
                 ...(message.component?.fieldsReceived ?? []),

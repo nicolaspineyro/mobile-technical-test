@@ -6,7 +6,10 @@ import {
 import { useSSEStream } from './useSSEStream';
 import { SSEEvent } from '@/types/chat.types';
 
-const SSE_URL = process.env.EXPO_PUBLIC_SSE_URL || '';
+const DEFAULT_SSE_URL =
+  'https://api-dev.withallo.com/v1/demo/interview/conversation';
+
+const SSE_URL = process.env.EXPO_PUBLIC_SSE_URL || DEFAULT_SSE_URL;
 
 export function useChat() {
   const [state, dispatch] = useReducer(reducer, initialState);

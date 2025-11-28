@@ -19,15 +19,20 @@ export function useSSEStream({
   autoReconnect = false,
 }: useSSEStreamProps) {
   const eventSourceRef = useRef<EventSource | null>(null);
+  const callbacksRef = useRef({ onEvent, onError, onConnectionChange });
 
   const disconnect = useCallback(() => {
     if (eventSourceRef.current) {
-      eventSourceRef.current.removeAllEventListeners();
-      eventSourceRef.current.close();
+      try {
+        eventSourceRef.current.removeAllEventListeners();
+        eventSourceRef.current.close();
+      } catch (error) {
+        console.error('Error disconnecting SSE:', error);
+      }
       eventSourceRef.current = null;
     }
-    onConnectionChange?.(false);
-  }, [onConnectionChange]);
+    callbacksRef.current.onConnectionChange?.(false);
+  }, []);
 
   const connect = useCallback(() => {
     disconnect();
@@ -41,11 +46,6 @@ export function useSSEStream({
       pollingInterval: autoReconnect ? 5000 : 0,
     });
 
-    eventSource.addEventListener('open', () => {
-      console.log('connection established');
-      onConnectionChange?.(true);
-    });
-
     const eventTypes: SSEEventType[] = [
       'message_start',
       'text_chunk',
@@ -55,35 +55,51 @@ export function useSSEStream({
       'component_end',
     ];
 
+    const handleOpen = () => {
+      console.log('connection established');
+      callbacksRef.current.onConnectionChange?.(true);
+    };
+
+    const handleError = (error: any) => {
+      console.error('SSE connection error', error);
+      callbacksRef.current.onError?.(
+        new Error(error.type || 'SSE connection error')
+      );
+      callbacksRef.current.onConnectionChange?.(false);
+    };
+
     eventTypes.forEach((eventType) => {
       eventSource.addEventListener(eventType, (event: any) => {
         try {
           const data = JSON.parse(event.data) as SSEEvent;
-          onEvent?.(data);
+          callbacksRef.current.onEvent?.(data);
         } catch (error) {
           console.error('failed to get event', error);
         }
       });
     });
 
-    eventSource.addEventListener('error', (error) => {
-      console.error('SSE connection error', error);
-      onError?.(new Error(error.type || 'SSE connection error'));
-      onConnectionChange?.(false);
-    });
+    eventSource.addEventListener('open', handleOpen);
+    eventSource.addEventListener('error', handleError);
 
     eventSourceRef.current = eventSource;
-  }, [autoReconnect, disconnect, onConnectionChange, onError, onEvent, url]);
+  }, [url, autoReconnect, disconnect]);
 
   useEffect(() => {
-    return () => disconnect();
-  }, [connect, disconnect]);
+    callbacksRef.current = { onEvent, onError, onConnectionChange };
+  }, [onEvent, onError, onConnectionChange]);
+
+  useEffect(() => {
+    return () => {
+      disconnect();
+    };
+  }, []);
 
   useEffect(() => {
     const subscription = AppState.addEventListener('change', (nextAppState) => {
       if (nextAppState === 'active') {
-        console.log('app active again connecting...');
-        connect();
+        console.log('app should reconnect again in prod...');
+        // connect();
       } else if (nextAppState === 'background' || nextAppState === 'inactive') {
         console.log('app in background close sse...');
         disconnect();
