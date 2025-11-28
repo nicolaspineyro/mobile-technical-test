@@ -1,10 +1,11 @@
-import { Message } from '@/types/chat.types';
-import { FlashList, FlashListRef } from '@shopify/flash-list';
 import React, { useCallback, useRef, useState } from 'react';
+import { Platform } from 'react-native';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
+import { FlashList, FlashListRef } from '@shopify/flash-list';
+
+import { Message } from '@/types/chat.types';
 import { spacing } from '@/theme/tokens';
 import MessageBubble from './list/MessageBubble';
-import { useSafeAreaInsets } from 'react-native-safe-area-context';
-import { Platform } from 'react-native';
 
 interface ChatListProps {
   messages: Message[];

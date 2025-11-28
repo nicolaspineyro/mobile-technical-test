@@ -1,7 +1,7 @@
 import React from 'react';
 import { Pressable, View, Text, StyleSheet } from 'react-native';
-import { colors, spacing, radius, typography } from '@/theme/tokens';
 import { AntDesign } from '@expo/vector-icons';
+import { colors, spacing, radius, typography } from '@/theme/tokens';
 
 interface BottomSheetOptionProps {
   icon: React.ReactNode;

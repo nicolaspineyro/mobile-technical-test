@@ -1,6 +1,6 @@
 import { useState, useCallback } from 'react';
-import * as Clipboard from 'expo-clipboard';
 import { Alert } from 'react-native';
+import * as Clipboard from 'expo-clipboard';
 
 interface UseClipboardOptions {
   successMessage?: string;

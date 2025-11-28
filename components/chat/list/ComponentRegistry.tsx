@@ -1,9 +1,9 @@
+import React from 'react';
 import {
   CalendarEventFields,
   ChatComponentType,
   ContactBadgeFields,
 } from '@/types/chat.types';
-import React from 'react';
 import ContactBadge from './ContactBadge';
 import CalendarEvent from './CalendarEvent';
 import Skeleton from './Skeleton';

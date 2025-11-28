@@ -1,9 +1,9 @@
-import { colors, spacing, typography } from '@/theme/tokens';
-import { BlurView } from 'expo-blur';
 import React from 'react';
 import { View, StyleSheet, Platform } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
+import { BlurView } from 'expo-blur';
 import TMFCLogo from '../icons/TMFCLogo';
+import { colors, spacing, typography } from '@/theme/tokens';
 
 interface ChatHeaderProps {
   isConnected: boolean;

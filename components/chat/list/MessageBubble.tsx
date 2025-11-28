@@ -1,6 +1,6 @@
-import { Message } from '@/types/chat.types';
 import React, { useEffect } from 'react';
 import { View, StyleSheet, TextInput } from 'react-native';
+import { Message } from '@/types/chat.types';
 import Animated, {
   FadeInDown,
   useAnimatedStyle,

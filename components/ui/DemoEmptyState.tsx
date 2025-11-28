@@ -1,7 +1,7 @@
-import { colors, radius, spacing, typography } from '@/theme/tokens';
-import { AntDesign, FontAwesome5 } from '@expo/vector-icons';
 import React from 'react';
 import { Pressable, ScrollView, StyleSheet, Text, View } from 'react-native';
+import { colors, radius, spacing, typography } from '@/theme/tokens';
+import { AntDesign, FontAwesome5 } from '@expo/vector-icons';
 import Card from './Card';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 

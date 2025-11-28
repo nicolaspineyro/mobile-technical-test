@@ -1,4 +1,3 @@
-import { colors, radius, spacing, typography } from '@/theme/tokens';
 import React from 'react';
 import {
   TextInput,
@@ -10,6 +9,7 @@ import {
   TextInputProps,
   Text,
 } from 'react-native';
+import { colors, radius, spacing, typography } from '@/theme/tokens';
 
 interface InputProps extends TextInputProps {
   containerStyle?: ViewStyle;

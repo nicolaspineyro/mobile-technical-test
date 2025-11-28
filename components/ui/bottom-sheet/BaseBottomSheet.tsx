@@ -1,6 +1,6 @@
-import { colors, radius, shadows, spacing } from '@/theme/tokens';
 import React from 'react';
 import { Modal, Pressable, StyleSheet } from 'react-native';
+import { colors, radius, shadows, spacing } from '@/theme/tokens';
 
 interface BaseBottomSheetProps {
   visible: boolean;

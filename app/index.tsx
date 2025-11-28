@@ -1,5 +1,4 @@
 import React, { useState } from 'react';
-import { useFonts } from 'expo-font';
 import {
   View,
   StyleSheet,
@@ -8,14 +7,13 @@ import {
   KeyboardAvoidingView,
   ActivityIndicator,
 } from 'react-native';
-
+import { useFonts } from 'expo-font';
 import { useChat } from '@/hooks/useChat';
-
 import { ChatHeader } from '@/components/chat/ChatHeader';
 import Controls from '@/components/chat/Controls';
 import ChatList from '@/components/chat/ChatList';
-import { colors } from '@/theme/tokens';
 import DemoEmptyState from '@/components/ui/DemoEmptyState';
+import { colors } from '@/theme/tokens';
 
 export default function ChatScreen() {
   const [fontsLoaded] = useFonts({
