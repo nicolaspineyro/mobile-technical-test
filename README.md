@@ -74,7 +74,7 @@ I split the project into independent systems and built each one in isolation bef
       2. Message State Management
             - With streaming in place, I implemented a useReducer to handle complex state actions for text chunks, component fields, and completion.
             - Used mock events first to verify assembly logic deterministically.
-            - Why: State must be correct before rendering anything; otherwise you fight UI bugs that are really parsing/state issues.
+            - Why: State must be correct before rendering anything; otherwise, you fight UI bugs that are really parsing/state issues.
 
       3. Text-Only Chat UI
             - Once parsing + state were solid, I added a minimal UI using FlashList.
@@ -84,15 +84,14 @@ I split the project into independent systems and built each one in isolation bef
       4. Dynamic Component System 
             - Next, I layered in complex message types using a component registry.
             - Added one at a time: contact badge → calendar event.
-            - Verified field-by-field assembly and “ready to render” logic.
+            - Verified field-by-field assembly.
 
       5. Final Polish Layer
             - After everything worked in isolation, I added refinement:
             - Reanimated entrance transitions
-            - Error states
             - Loading placeholders
             - Incomplete-component guards
-            - Why: Animation and UX polish only matter once the underlying system is solid.
+            - Why: Animation and UX polish only matter once the underlying system is well placed.
 
 ## Running the App
 
@@ -145,14 +144,14 @@ mobile-technical-test
 
 ## Features
 
-- When firing onLongPress on Component Cards desplegates BottomSheetComponent (reusable):
+- When firing onLongPress on Component Cards, it displays BottomSheetComponent (reusable):
 
       1. Add Contact to Native Contacts App
       2. Share Contact natively anywhere else
       3. Add event to Native Calendar App
       4. Share Event to Native Calendar App 
 - Copy to clipboard reusable logic
-- Link to email native app if pressing in email
+- Link to the email native app if pressing in the email
 - Text selection across the chat bubbles.
 <table>
   <tr>
@@ -170,4 +169,144 @@ mobile-technical-test
   </tr>
 </table>
 
+## UX/UI Decisions
+
+Progressive text display: 4-char streaming appears instant, with fade-in animation
+
+Components only render when complete: avoids broken UI and placeholder issues
+
+Animations: Fade + SlideIn for messages, ZoomIn for components
+
+Auto-scroll: Respects the user's current scroll position, only auto-scrolls when at the bottom
+
+Responsiveness: Flexbox ensures components scale across screen sizes
+
+Animation Choices
+
+Minimal animations and details, micro interactions give a quality sensation, make you want to use the product more.
+
+  - Text chunks: no animation per chunk; direct append + subtle fade-in on message start
+
+  - Message entrance: slide up + fade-in
+
+  - Component appearance: skeleton + fade on completion
+
+  -  Performance: all animations on UI thread via Reanimated 4
+
+
+##  Technical Decisions & Justifications
+<table>
+  <tr>
+    <th>Area</th>
+    <th>Decision</th>
+    <th>Why</th>
+  </tr>
+  <tr>
+    <td>State Management</td>
+    <td>useReducer</td>
+    <td>Better for complex state cases, all business logic in one place, message assembly efficiently; tracks building → complete; easier to test</td>
+  </tr>
+  <tr>
+    <td>SSE Client</td>
+    <td>react-native-sse</td>
+    <td>Native fetch with ReadableStream issues in RN; handles cleanup and reconnections</td>
+  </tr>
+  <tr>
+    <td>Dynamic System</td>
+    <td>Factory + Registry</td>
+    <td>Extensible for new component types, avoids giant switch cases, ensures type safety</td>
+  </tr>
+  <tr>
+    <td>List Rendering</td>
+    <td>FlashList + memoization</td>
+    <td>Smooth scrolling for conversations; avoids re-renders</td>
+  </tr>
+  <tr>
+    <td>Animations</td>
+    <td>Reanimated 4</td>
+    <td>Runs on UI thread, high performance, smooth streaming experience</td>
+  </tr>
+  <tr>
+    <td>Error Handling</td>
+    <td>try/catch + incomplete component checks</td>
+    <td>Prevents crashes, logs errors, renders only complete components</td>
+  </tr>
+</table>
+
+# Strategic Enhancements for the Chat Experience
+
+Three areas of expansion align cleanly with the current architecture:
+
+## **1. Calendar Awareness (expo-calendar)**
+**What we add:**  
+- We already are writing events, but we can also read events, detect availability, and warn about conflicts  
+- Suggest ideal meeting times  
+- Render event suggestion cards  
+
+## **2. Smart Reminders (expo-notifications)**
+**What we add:**  
+- Auto-created reminder cards  
+- Follow-ups, recurring alerts  
+- Confirmation and overdue prompts  
+
+**Why:**  
+Low development effort, strong retention driver.  
+
+## **3. Document & Email Summaries (expo-document-picker)**
+**What we add:**  
+- Upload PDFs/docs  
+- Summaries with deadlines + tasks  
+- One-tap “Add to calendar” or “Create reminder.”  
+
+## **4. Contacts & Phone Actions (expo-contacts, Linking)**
+**What we add:**  
+- Contact-aware cards  
+- Call / SMS / Email / WhatsApp actions  
+- Auto-suggest actions for known people  
+
+## **5. File Cards (expo-file-system)**
+**What we add:**  
+- File uploads with previews  
+- Auto-tagging (invoice, receipt, contract)  
+- Suggested next actions  
+
+## **6. Deep App Linking (Linking, IntentLauncher)**
+**What we add:**  
+- Open Maps with coordinates  
+- Prefilled email drafts  
+- One-tap WhatsApp messages  
+- Calendar deep links  
+
+## **7. Screenshot / Image Intelligence (expo-image-picker)**
+**What we add:**  
+- Screenshot uploads  
+- Extract dates, tasks, commitments  
+- Produce actionable cards  
+
+**Why:**  
+Mobile users think in screenshots more than documents.  
+
+**Example:**  
+Screenshot of WhatsApp → assistant extracts “meeting tomorrow 4pm”.
+
+## **8. SMS Parsing (OS share sheet)**
+**What we add:**  
+- Share SMS → extract codes, deadlines, reminders  
+- Auto-create task/reminder cards  
+
+## **9. Daily Digest (Background Fetch)**
+**What we add:**  
+- Summary card of today’s tasks, events, and reminders  
+- “What changed overnight?” updates  
+
+# **Extra Add-On Ideas**
+
+## **10. Voice Notes → Structured Insights (expo-av + transcription)**
+Voice memo becomes tasks, reminders, or meeting summaries.
+
+## **11. Contact-Aware Smart Replies**
+Mention a contact → assistant proposes reply drafts or meeting prompts.
+
+## **12. In-Chat Mini Dashboards**
+Component-driven summaries for sales, KPIs, or budgets.
 
