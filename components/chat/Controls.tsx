@@ -15,6 +15,13 @@ interface ControlsProps {
 }
 
 const Controls = ({ reconnect, disconnect, reset }: ControlsProps) => {
+  const handleStart = () => {
+    reset();
+    reconnect();
+  };
+
+  const handleHaptics = () => hapticImpact(ImpactFeedbackStyle.Light);
+
   return (
     <View style={[styles.wrapper]}>
       <BlurView
@@ -35,11 +42,8 @@ const Controls = ({ reconnect, disconnect, reset }: ControlsProps) => {
               styles.buttonPrimary,
               pressed && styles.buttonPressed,
             ]}
-            onPress={() => {
-              reset();
-              reconnect();
-            }}
-            onPressIn={() => hapticImpact(ImpactFeedbackStyle.Light)}
+            onPress={handleStart}
+            onPressIn={handleHaptics}
           >
             <AntDesign name='play-circle' size={22} color='black' />
           </Pressable>
@@ -48,10 +52,8 @@ const Controls = ({ reconnect, disconnect, reset }: ControlsProps) => {
               styles.buttonSecondary,
               pressed && styles.buttonPressed,
             ]}
-            onPress={() => {
-              disconnect();
-            }}
-            onPressIn={() => hapticImpact(ImpactFeedbackStyle.Light)}
+            onPress={disconnect}
+            onPressIn={handleHaptics}
           >
             <FontAwesome5 name='stop-circle' size={22} color='black' />
           </Pressable>

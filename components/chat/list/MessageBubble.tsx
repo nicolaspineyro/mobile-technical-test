@@ -41,7 +41,6 @@ const MessageBubble = ({ item }: MessageBubbleProps) => {
         {textContent && (
           <TextInput
             value={textContent}
-            selectionColor={'gray'}
             editable={false}
             multiline={true}
             selectTextOnFocus={false}

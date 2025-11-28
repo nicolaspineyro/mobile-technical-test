@@ -54,7 +54,7 @@ export default ChatList;
 
 const styles = StyleSheet.create({
   listContent: {
-    paddingHorizontal: spacing.sm,
+    marginHorizontal: spacing.sm,
     paddingTop: Platform.OS === 'ios' ? 70 : 40,
     paddingBottom: Platform.OS === 'ios' ? 70 : 80,
   },

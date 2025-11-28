@@ -7,6 +7,7 @@ import { format, parseISO } from 'date-fns';
 import { hapticImpact } from '@/utils/haptics';
 import { ImpactFeedbackStyle } from 'expo-haptics';
 import CalendarBottomSheet from '@/components/ui/CalendarBottomSheet';
+import Card from '@/components/ui/Card';
 interface CalendarEventProps {
   data: Partial<CalendarEventFields>;
 }
@@ -18,14 +19,18 @@ const CalendarEvent = ({ data }: CalendarEventProps) => {
   const statusStyle = status ? statusConfig[status] : statusConfig.PROPOSED;
   const formattedDate = format(parseISO(date || ''), 'MMMM do');
 
+  const handleLongPress = () => {
+    hapticImpact(ImpactFeedbackStyle.Medium);
+    setShowBottomSheet(true);
+  };
+
   return (
     <>
-      <View style={styles.container}>
-        <View style={styles.header}>
-          <Text style={styles.title} numberOfLines={2}>
-            {title}
-          </Text>
-        </View>
+      <Card
+        onLongPress={status === 'CONFIRMED' ? handleLongPress : undefined}
+        style={styles.container}
+      >
+        <Text style={styles.title}>{title}</Text>
 
         <View style={styles.details}>
           <View style={styles.detailRow}>
@@ -59,14 +64,12 @@ const CalendarEvent = ({ data }: CalendarEventProps) => {
             </Pressable>
           )}
         </View>
-      </View>
+      </Card>
 
       <CalendarBottomSheet
         visible={showBottomSheet}
         setVisible={setShowBottomSheet}
-        title={title}
-        date={date}
-        time={time}
+        {...data}
       />
     </>
   );
@@ -84,14 +87,8 @@ const styles = StyleSheet.create({
     marginTop: spacing.md,
   },
 
-  header: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    marginBottom: spacing.md,
-  },
-
   icon: {
-    fontSize: 22,
+    fontSize: typography.xl,
     marginRight: spacing.sm,
   },
 
@@ -99,7 +96,7 @@ const styles = StyleSheet.create({
     fontSize: typography.lg,
     fontWeight: typography.semibold,
     color: colors.textPrimary,
-    flex: 1,
+    marginBottom: spacing.lg,
   },
 
   details: {
