@@ -50,6 +50,28 @@
         {
           "contactsPermission": "Allow $(PRODUCT_NAME) to access your contacts."
         }
+      ],
+      [
+        "expo-font",
+        {
+          "fonts": ["./assets/fonts/PlayfairDisplay-Medium.ttf"],
+          "android": {
+            "fonts": [
+              {
+                "fontFamily": "PlayfairDisplay",
+                "fontDefinitions": [
+                  {
+                    "path": "./assets/fonts/PlayfairDisplay-Medium.ttf",
+                    "weight": 600
+                  }
+                ]
+              }
+            ]
+          },
+          "ios": {
+            "fonts": ["./assets/fonts/PlayfairDisplay-Medium.ttf"]
+          }
+        }
       ]
     ],
     "experiments": {

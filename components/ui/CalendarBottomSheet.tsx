@@ -122,7 +122,7 @@ const CalendarBottomSheet = ({
                 <MaterialIcons name='open-in-new' size={22} color='#1976D2' />
               </View>
               <View style={styles.optionText}>
-                <Text style={styles.optionTitle}>Open in Calendar</Text>
+                <Text style={styles.optionTitle}>Add to Calendar</Text>
                 <Text style={styles.optionSubtitle}>View in calendar app</Text>
               </View>
               <AntDesign name='right' size={18} color={colors.textTertiary} />

@@ -2,12 +2,7 @@ import React, { useState } from 'react';
 import { CalendarEventFields } from '@/types/chat.types';
 import { Text, StyleSheet, View, Pressable } from 'react-native';
 import { colors, radius, spacing, typography } from '@/theme/tokens';
-import {
-  AntDesign,
-  Entypo,
-  FontAwesome,
-  MaterialIcons,
-} from '@expo/vector-icons';
+import { Entypo, FontAwesome, MaterialIcons } from '@expo/vector-icons';
 import { format, parseISO } from 'date-fns';
 import { hapticImpact } from '@/utils/haptics';
 import { ImpactFeedbackStyle } from 'expo-haptics';
@@ -60,7 +55,7 @@ const CalendarEvent = ({ data }: CalendarEventProps) => {
               onPress={() => setShowBottomSheet(true)}
               onPressIn={() => hapticImpact(ImpactFeedbackStyle.Light)}
             >
-              <AntDesign name='plus' size={24} color='black' />
+              <Text style={styles.buttonText}>Actions</Text>
             </Pressable>
           )}
         </View>
@@ -81,7 +76,9 @@ const styles = StyleSheet.create({
   container: {
     backgroundColor: colors.cardBackground,
     borderRadius: radius.xl,
-    padding: spacing.lg,
+    paddingHorizontal: spacing.md,
+    paddingTop: spacing.md,
+    paddingBottom: spacing.sm,
     borderWidth: 1,
     borderColor: colors.cardBorder,
     marginTop: spacing.md,
@@ -143,9 +140,16 @@ const styles = StyleSheet.create({
   },
 
   buttonPrimary: {
-    backgroundColor: colors.textTertiary,
+    backgroundColor: 'transparent',
     padding: spacing.sm,
     borderRadius: radius.full,
+    justifyContent: 'center',
+    alignSelf: 'flex-end',
+  },
+
+  buttonText: {
+    textDecorationColor: 'black',
+    textDecorationLine: 'underline',
   },
 
   buttonPressed: {

@@ -16,20 +16,12 @@ interface MessageBubbleProps {
 }
 
 const MessageBubble = ({ item }: MessageBubbleProps) => {
-  const { textContent, component, status } = item;
+  const { textContent, component } = item;
   const isUser = item.role === 'user';
-  const isComponentBuilding =
-    status === 'building' && !!component && !component.isComplete && !isUser;
-
   const dynamicComponenOpacity = useSharedValue(0);
-  const pulse = useSharedValue(0.3);
 
   const dynamicComponentStyle = useAnimatedStyle(() => ({
     opacity: dynamicComponenOpacity.value,
-  }));
-
-  const pulseStyle = useAnimatedStyle(() => ({
-    opacity: pulse.value,
   }));
 
   useEffect(() => {
@@ -55,11 +47,6 @@ const MessageBubble = ({ item }: MessageBubbleProps) => {
             selectTextOnFocus={false}
             style={[styles.text, isUser ? styles.userText : styles.agentText]}
           />
-        )}
-        {isComponentBuilding && (
-          <View style={styles.loadingContainer}>
-            <Animated.View style={[styles.loadingDot, pulseStyle]} />
-          </View>
         )}
 
         {component && (
@@ -104,23 +91,12 @@ const styles = StyleSheet.create({
     padding: 0,
   },
   userText: {
-    color: '#FFFFFF',
+    color: colors.background,
     fontWeight: typography.medium,
   },
   agentText: {
+    fontFamily: 'PlayfairDisplay-Medium',
     color: colors.textPrimary,
-  },
-  loadingContainer: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    gap: 6,
-    padding: 8,
-  },
-  loadingDot: {
-    width: 8,
-    height: 8,
-    borderRadius: 4,
-    backgroundColor: '#666',
   },
 });
 

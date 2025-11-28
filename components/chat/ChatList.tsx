@@ -1,7 +1,7 @@
 import { Message } from '@/types/chat.types';
 import { FlashList, FlashListRef } from '@shopify/flash-list';
 import React, { useRef, useState } from 'react';
-import { StyleSheet } from 'react-native';
+import { Platform, StyleSheet } from 'react-native';
 import { spacing } from '@/theme/tokens';
 import MessageBubble from './list/MessageBubble';
 
@@ -55,6 +55,7 @@ export default ChatList;
 const styles = StyleSheet.create({
   listContent: {
     paddingHorizontal: spacing.sm,
-    paddingVertical: 70,
+    paddingTop: Platform.OS === 'ios' ? 70 : 40,
+    paddingBottom: Platform.OS === 'ios' ? 70 : 80,
   },
 });

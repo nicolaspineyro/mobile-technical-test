@@ -7,6 +7,7 @@ import ContactBottomSheet from '@/components/ui/ContactBottomSheet';
 import { hapticImpact } from '@/utils/haptics';
 import { ImpactFeedbackStyle } from 'expo-haptics';
 import Feather from '@expo/vector-icons/Feather';
+import { useClipboard } from '@/hooks/useClipboard';
 
 interface ContactBadgeProps {
   data: Partial<ContactBadgeFields>;
@@ -15,10 +16,20 @@ interface ContactBadgeProps {
 const ContactBadge = ({ data }: ContactBadgeProps) => {
   const { name, email, company, profilePicture } = data;
   const [showBottomSheet, setShowBottomSheet] = useState(false);
+  const { copyToClipboard, isCopied } = useClipboard({
+    successMessage: 'Email copied to clipboard!',
+    showAlert: true,
+  });
 
   const handleLongPress = () => {
     hapticImpact(ImpactFeedbackStyle.Medium);
     setShowBottomSheet(true);
+  };
+
+  const handleCopy = () => {
+    if (email) {
+      copyToClipboard(email);
+    }
   };
 
   return (
@@ -33,7 +44,20 @@ const ContactBadge = ({ data }: ContactBadgeProps) => {
         <View style={styles.footer}>
           <View style={styles.content}>
             <Text style={styles.name}>{name}</Text>
-            <Text style={styles.email}>{email}</Text>
+            <View style={styles.emailContainer}>
+              <Text style={styles.email}>{email}</Text>
+              <Pressable
+                style={({ pressed }) => [pressed && styles.buttonPressed]}
+                onPressIn={() => hapticImpact(ImpactFeedbackStyle.Light)}
+                onPress={handleCopy}
+              >
+                <Feather
+                  name={isCopied ? 'check' : 'copy'}
+                  size={typography.lg}
+                  color={isCopied ? colors.success : colors.textTertiary}
+                />
+              </Pressable>
+            </View>
             <Text style={styles.company}>{company}</Text>
           </View>
           <Pressable
@@ -44,10 +68,11 @@ const ContactBadge = ({ data }: ContactBadgeProps) => {
             onPress={() => setShowBottomSheet(true)}
             onPressIn={() => hapticImpact(ImpactFeedbackStyle.Light)}
           >
-            <Feather name='user-plus' size={24} color='black' />
+            <Text style={styles.buttonText}>Actions</Text>
           </Pressable>
         </View>
       </Pressable>
+
       <ContactBottomSheet
         visible={showBottomSheet}
         setVisible={setShowBottomSheet}
@@ -62,7 +87,9 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     backgroundColor: colors.cardBackground,
     borderRadius: radius.xl,
-    padding: spacing.lg,
+    paddingHorizontal: spacing.md,
+    paddingTop: spacing.md,
+    paddingBottom: spacing.sm,
     borderWidth: 1,
     borderColor: colors.cardBorder,
     marginTop: spacing.md,
@@ -71,7 +98,6 @@ const styles = StyleSheet.create({
 
   content: {
     flex: 1,
-    flexDirection: 'column',
     justifyContent: 'center',
   },
 
@@ -94,6 +120,11 @@ const styles = StyleSheet.create({
     marginBottom: spacing.xs,
   },
 
+  emailContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: spacing.sm,
+  },
   email: {
     fontSize: typography.sm,
     fontWeight: typography.regular,
@@ -108,11 +139,16 @@ const styles = StyleSheet.create({
   },
 
   buttonPrimary: {
-    backgroundColor: colors.textTertiary,
+    backgroundColor: 'transparent',
     padding: spacing.sm,
     borderRadius: radius.full,
     justifyContent: 'center',
     alignSelf: 'flex-end',
+  },
+
+  buttonText: {
+    textDecorationColor: 'black',
+    textDecorationLine: 'underline',
   },
 
   buttonPressed: {
@@ -121,8 +157,7 @@ const styles = StyleSheet.create({
 
   footer: {
     flex: 1,
-    flexDirection: 'row',
-    justifyContent: 'space-between',
+    flexDirection: 'column',
   },
 });
 

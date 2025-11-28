@@ -1,8 +1,9 @@
 import { colors, spacing, typography } from '@/theme/tokens';
 import { BlurView } from 'expo-blur';
 import React from 'react';
-import { View, Text, StyleSheet, Platform } from 'react-native';
+import { View, StyleSheet, Platform } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
+import TMBFLogo from '../icons/TMBF';
 
 interface ChatHeaderProps {
   isConnected: boolean;
@@ -15,16 +16,13 @@ export function ChatHeader({ isConnected, error }: ChatHeaderProps) {
   return (
     <BlurView
       tint='light'
-      style={[
-        styles.container,
-        { paddingTop: insets.top },
-      ]}
+      style={[styles.container, { paddingTop: insets.top }]}
       experimentalBlurMethod={
         Platform.OS === 'android' ? 'dimezisBlurView' : 'none'
       }
     >
       <View style={styles.content}>
-        <Text style={styles.title}>The Mobile First Company</Text>
+        <TMBFLogo fill={'black'} width={250} height={30} />
         <View
           style={[
             styles.dot,

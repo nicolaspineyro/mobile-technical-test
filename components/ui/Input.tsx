@@ -54,7 +54,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     borderRadius: radius.lg,
-    paddingHorizontal: spacing.md,
+    paddingHorizontal: spacing.sm,
   },
   inputContainerDark: {
     backgroundColor: 'transparent',

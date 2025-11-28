@@ -1,4 +1,5 @@
 import React from 'react';
+import { useFonts } from 'expo-font';
 import {
   View,
   StyleSheet,
@@ -17,6 +18,9 @@ import { colors } from '@/theme/tokens';
 export default function ChatScreen() {
   const { messages, isConnected, error, reconnect, disconnect, reset } =
     useChat();
+  const [fontsLoaded] = useFonts({
+    'PlayfairDisplay-Medium': require('../assets/fonts/PlayfairDisplay-Medium.ttf'),
+  });
 
   return (
     <KeyboardAvoidingView

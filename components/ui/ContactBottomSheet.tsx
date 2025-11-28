@@ -131,7 +131,7 @@ const ContactBottomSheet = ({
                 <MaterialIcons name='open-in-new' size={22} color='#1976D2' />
               </View>
               <View style={styles.optionText}>
-                <Text style={styles.optionTitle}>Open in Contacts</Text>
+                <Text style={styles.optionTitle}>Add to Contacts</Text>
                 <Text style={styles.optionSubtitle}>
                   View and edit in contacts app
                 </Text>
@@ -147,7 +147,7 @@ const ContactBottomSheet = ({
               onPress={shareContact}
             >
               <View style={[styles.optionIcon, { backgroundColor: '#FFF3E0' }]}>
-                <Feather name='share-2' size={22} color='#F57C00' />
+                <Feather name='share' size={24} color={colors.warning} />
               </View>
               <View style={styles.optionText}>
                 <Text style={styles.optionTitle}>Share Contact</Text>

@@ -24,7 +24,11 @@ const Controls = ({ reconnect, disconnect, reset }: ControlsProps) => {
           Platform.OS === 'android' ? 'dimezisBlurView' : 'none'
         }
       >
-        <Input />
+        <Input
+          inputStyle={{ color: 'black' }}
+          multiline
+          placeholder='This is a dummy test Input...'
+        />
         <View style={styles.buttons}>
           <Pressable
             style={({ pressed }) => [
@@ -60,7 +64,8 @@ const Controls = ({ reconnect, disconnect, reset }: ControlsProps) => {
 const styles = StyleSheet.create({
   container: {
     paddingHorizontal: spacing.sm,
-    paddingVertical: spacing.lg,
+    paddingTop: spacing.md,
+    paddingBottom: spacing.sm,
     borderWidth: 1,
     borderColor: colors.cardBorder,
     borderRadius: radius.xl,
