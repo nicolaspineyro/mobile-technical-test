@@ -92,7 +92,8 @@ const styles = StyleSheet.create({
     maxWidth: '75%',
     padding: spacing.md,
     backgroundColor: colors.userBubble,
-    borderBottomRightRadius: radius.xs,
+    borderWidth: 1,
+    borderColor: colors.primaryDark,
   },
   agentBubble: {
     width: '100%',

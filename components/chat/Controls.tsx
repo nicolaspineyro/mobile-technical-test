@@ -15,14 +15,6 @@ interface ControlsProps {
 }
 
 const Controls = ({ reconnect, disconnect, reset }: ControlsProps) => {
-  // const { height, state } = useAnimatedKeyboard();
-
-  // const animatedStyle = useAnimatedStyle(() => {
-  //   return {
-  //     bottom: withTiming(state.value === 'OPEN' ? height.value : 0),
-  //   };
-  // });
-
   return (
     <View style={[styles.wrapper]}>
       <BlurView
@@ -74,7 +66,7 @@ const styles = StyleSheet.create({
     borderRadius: radius.xl,
     overflow: 'hidden',
     marginBottom: spacing['3xl'],
-    marginHorizontal: spacing.lg,
+    marginHorizontal: spacing.md,
   },
   wrapper: { position: 'absolute', bottom: 0, left: 0, right: 0, zIndex: 10 },
   buttons: {

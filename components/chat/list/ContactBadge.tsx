@@ -1,8 +1,12 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { ContactBadgeFields } from '@/types/chat.types';
-import { Text, View, StyleSheet } from 'react-native';
+import { Text, View, StyleSheet, Pressable } from 'react-native';
 import { Image } from 'expo-image';
 import { colors, radius, spacing, typography } from '@/theme/tokens';
+import ContactBottomSheet from '@/components/ui/ContactBottomSheet';
+import { hapticImpact } from '@/utils/haptics';
+import { ImpactFeedbackStyle } from 'expo-haptics';
+import Feather from '@expo/vector-icons/Feather';
 
 interface ContactBadgeProps {
   data: Partial<ContactBadgeFields>;
@@ -10,20 +14,46 @@ interface ContactBadgeProps {
 
 const ContactBadge = ({ data }: ContactBadgeProps) => {
   const { name, email, company, profilePicture } = data;
+  const [showBottomSheet, setShowBottomSheet] = useState(false);
+
+  const handleLongPress = () => {
+    hapticImpact(ImpactFeedbackStyle.Medium);
+    setShowBottomSheet(true);
+  };
+
   return (
-    <View style={styles.container}>
-      <Image
-        source={{ uri: profilePicture }}
-        style={styles.avatar}
-        contentFit='cover'
-        transition={200}
+    <>
+      <Pressable onLongPress={handleLongPress} style={styles.container}>
+        <Image
+          source={{ uri: profilePicture }}
+          style={styles.avatar}
+          contentFit='cover'
+          transition={200}
+        />
+        <View style={styles.footer}>
+          <View style={styles.content}>
+            <Text style={styles.name}>{name}</Text>
+            <Text style={styles.email}>{email}</Text>
+            <Text style={styles.company}>{company}</Text>
+          </View>
+          <Pressable
+            style={({ pressed }) => [
+              styles.buttonPrimary,
+              pressed && styles.buttonPressed,
+            ]}
+            onPress={() => setShowBottomSheet(true)}
+            onPressIn={() => hapticImpact(ImpactFeedbackStyle.Light)}
+          >
+            <Feather name='user-plus' size={24} color='black' />
+          </Pressable>
+        </View>
+      </Pressable>
+      <ContactBottomSheet
+        visible={showBottomSheet}
+        setVisible={setShowBottomSheet}
+        {...data}
       />
-      <View style={styles.content}>
-        <Text style={styles.name}>{name}</Text>
-        <Text style={styles.email}>{email}</Text>
-        <Text style={styles.company}>{company}</Text>
-      </View>
-    </View>
+    </>
   );
 };
 
@@ -75,6 +105,24 @@ const styles = StyleSheet.create({
     fontSize: typography.sm,
     fontWeight: typography.medium,
     color: colors.textTertiary,
+  },
+
+  buttonPrimary: {
+    backgroundColor: colors.textTertiary,
+    padding: spacing.sm,
+    borderRadius: radius.full,
+    justifyContent: 'center',
+    alignSelf: 'flex-end',
+  },
+
+  buttonPressed: {
+    opacity: 0.8,
+  },
+
+  footer: {
+    flex: 1,
+    flexDirection: 'row',
+    justifyContent: 'space-between',
   },
 });
 
