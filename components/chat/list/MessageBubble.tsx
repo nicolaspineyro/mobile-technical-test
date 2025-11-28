@@ -1,6 +1,6 @@
 import { Message } from '@/types/chat.types';
 import React, { useEffect } from 'react';
-import { Text, View, StyleSheet } from 'react-native';
+import { View, StyleSheet, TextInput } from 'react-native';
 import Animated, {
   FadeInDown,
   useAnimatedStyle,
@@ -47,11 +47,14 @@ const MessageBubble = ({ item }: MessageBubbleProps) => {
         style={[styles.bubble, isUser ? styles.userBubble : styles.agentBubble]}
       >
         {textContent && (
-          <Text
+          <TextInput
+            value={textContent}
+            selectionColor={'gray'}
+            editable={false}
+            multiline={true}
+            selectTextOnFocus={false}
             style={[styles.text, isUser ? styles.userText : styles.agentText]}
-          >
-            {textContent}
-          </Text>
+          />
         )}
         {isComponentBuilding && (
           <View style={styles.loadingContainer}>
@@ -76,22 +79,18 @@ const MessageBubble = ({ item }: MessageBubbleProps) => {
 const styles = StyleSheet.create({
   row: {
     flexDirection: 'row',
+    justifyContent: 'flex-start',
     marginBottom: spacing.md,
-    paddingRight: spacing.lg,
   },
   rowUser: {
     justifyContent: 'flex-end',
-    paddingRight: 0,
-    paddingLeft: spacing.lg,
   },
-
   bubble: {
-    padding: spacing.md,
-    borderRadius: radius.lg,
+    borderRadius: radius.xl,
   },
-
   userBubble: {
-    maxWidth: '80%',
+    maxWidth: '75%',
+    padding: spacing.md,
     backgroundColor: colors.userBubble,
     borderBottomRightRadius: radius.xs,
   },
@@ -100,7 +99,8 @@ const styles = StyleSheet.create({
   },
   text: {
     fontSize: typography.base,
-    lineHeight: typography.base * typography.lineHeight.normal,
+    lineHeight: typography.base * typography.lineHeight.tight,
+    padding: 0,
   },
   userText: {
     color: '#FFFFFF',

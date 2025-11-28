@@ -10,14 +10,18 @@
     "newArchEnabled": true,
     "ios": {
       "supportsTablet": true,
-      "bundleIdentifier": "com.pablo.gdcr.mfcaichat"
+      "bundleIdentifier": "com.pablo.gdcr.mfcaichat",
+      "infoPlist": {
+        "NSCalendarsUsageDescription": "This app needs access to your calendar to add events."
+      }
     },
     "android": {
       "adaptiveIcon": {
         "backgroundColor": "#E6F4FE",
         "foregroundImage": "./assets/images/android-icon-foreground.png",
         "backgroundImage": "./assets/images/android-icon-background.png",
-        "monochromeImage": "./assets/images/android-icon-monochrome.png"
+        "monochromeImage": "./assets/images/android-icon-monochrome.png",
+        "permissions": ["READ_CALENDAR", "WRITE_CALENDAR"]
       },
       "edgeToEdgeEnabled": true,
       "predictiveBackGestureEnabled": false,

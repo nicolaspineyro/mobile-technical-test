@@ -2,7 +2,7 @@ import React from 'react';
 import { ContactBadgeFields } from '@/types/chat.types';
 import { Text, View, StyleSheet } from 'react-native';
 import { Image } from 'expo-image';
-import { colors, radius, shadows, spacing, typography } from '@/theme/tokens';
+import { colors, radius, spacing, typography } from '@/theme/tokens';
 
 interface ContactBadgeProps {
   data: Partial<ContactBadgeFields>;
@@ -31,13 +31,12 @@ const styles = StyleSheet.create({
   container: {
     flexDirection: 'row',
     backgroundColor: colors.cardBackground,
-    borderRadius: radius.lg,
+    borderRadius: radius.xl,
     padding: spacing.lg,
     borderWidth: 1,
     borderColor: colors.cardBorder,
     marginTop: spacing.md,
     gap: spacing.lg,
-    ...shadows.md,
   },
 
   content: {
