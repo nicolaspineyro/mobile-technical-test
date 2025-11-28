@@ -4,13 +4,14 @@ import React, { useCallback, useRef, useState } from 'react';
 import { spacing } from '@/theme/tokens';
 import MessageBubble from './list/MessageBubble';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
+import { Platform } from 'react-native';
 
 interface ChatListProps {
   messages: Message[];
 }
 
 export const HEADER_HEIGHT = 70;
-export const CONTROLS_HEIGHT = 100;
+export const CONTROLS_HEIGHT = Platform.OS === 'android' ? 150 : 100;
 
 const ChatList = ({ messages }: ChatListProps) => {
   const insets = useSafeAreaInsets();

@@ -1,7 +1,7 @@
 import * as React from 'react';
 import * as Svg from 'react-native-svg';
 
-const TMBFLogo = (props) => (
+const TMFCLogo = (props) => (
   <Svg.Svg
     xmlns='http://www.w3.org/2000/svg'
     xmlnsXlink='http://www.w3.org/1999/xlink'
@@ -14,4 +14,4 @@ const TMBFLogo = (props) => (
     />
   </Svg.Svg>
 );
-export default TMBFLogo;
+export default TMFCLogo;

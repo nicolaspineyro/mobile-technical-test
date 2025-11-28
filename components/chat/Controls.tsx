@@ -72,7 +72,7 @@ const styles = StyleSheet.create({
     borderColor: colors.cardBorder,
     borderRadius: radius.xl,
     overflow: 'hidden',
-    marginBottom: spacing['3xl'],
+    marginBottom: Platform.OS === 'android' ? spacing['2xl'] : spacing['3xl'],
     marginHorizontal: spacing.md,
   },
   wrapper: { position: 'absolute', bottom: 0, left: 0, right: 0, zIndex: 10 },

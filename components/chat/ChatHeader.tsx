@@ -3,7 +3,7 @@ import { BlurView } from 'expo-blur';
 import React from 'react';
 import { View, StyleSheet, Platform } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
-import TMBFLogo from '../icons/TMBF';
+import TMFCLogo from '../icons/TMFCLogo';
 
 interface ChatHeaderProps {
   isConnected: boolean;
@@ -22,7 +22,7 @@ export function ChatHeader({ isConnected, error }: ChatHeaderProps) {
       }
     >
       <View style={styles.content}>
-        <TMBFLogo fill={'black'} width={250} height={30} />
+        <TMFCLogo fill={'black'} width={250} height={30} />
         <View
           style={[
             styles.dot,

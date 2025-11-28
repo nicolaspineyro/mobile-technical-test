@@ -13,11 +13,14 @@ const DemoEmptyState = ({ setShowEmptyState }: DemoEmptyStateProps) => {
   const insets = useSafeAreaInsets();
   return (
     <ScrollView
-      style={[styles.container, { paddingTop: insets.top }]}
+      style={[
+        styles.container,
+        { paddingTop: insets.top, paddingBottom: insets.bottom },
+      ]}
       contentContainerStyle={styles.content}
     >
       <Text style={styles.text}>Hello 👋</Text>
-      <Text style={styles.text}>Welcome to TMBFC technical test!</Text>
+      <Text style={styles.text}>Welcome to TMFC technical test!</Text>
       <Text style={styles.text}>Some things to have in mind:</Text>
       <View style={[styles.buttons]}>
         <Card style={styles.card}>
@@ -104,7 +107,6 @@ const styles = StyleSheet.create({
     flexGrow: 1,
     justifyContent: 'center',
     alignItems: 'center',
-    paddingBottom: spacing.xl,
   },
   card: {
     flexDirection: 'row',
@@ -118,7 +120,7 @@ const styles = StyleSheet.create({
 
   cardText: {
     fontWeight: typography.medium,
-    fontSize: typography.lg,
+    fontSize: typography.sm,
     marginBottom: spacing.sm,
   },
   start: {
@@ -131,12 +133,12 @@ const styles = StyleSheet.create({
   startText: {
     fontFamily: 'PlayfairDisplay-Medium',
     color: colors.background,
-    fontSize: typography['2xl'],
+    fontSize: typography.xl,
   },
 
   dot: {
-    width: 20,
-    height: 20,
+    width: 36,
+    height: 36,
     borderRadius: radius.full,
   },
 });
