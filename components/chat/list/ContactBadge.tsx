@@ -40,7 +40,7 @@ const ContactBadge = ({ data }: ContactBadgeProps) => {
 
   return (
     <>
-    <Card onLongPress={handleLongPress} style={styles.container}>
+      <Card pressable onLongPress={handleLongPress} style={styles.container}>
         <Image
           source={{ uri: profilePicture }}
           style={styles.avatar}
