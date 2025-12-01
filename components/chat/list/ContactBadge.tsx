@@ -5,11 +5,11 @@ import * as Linking from 'expo-linking';
 import { ImpactFeedbackStyle } from 'expo-haptics';
 import { colors, radius, spacing, typography } from '@/theme/tokens';
 import { hapticImpact } from '@/utils/haptics';
-import CopyButton from '@/components/ui/CopyButton';
-import ActionButton from '@/components/chat/list/ActionButton';
 import Card from '@/components/ui/Card';
 import ContactBottomSheet from '@/components/ui/bottom-sheet/ContactBottomSheet';
 import { ContactBadgeFields } from '@/types/chat.types';
+import Button from '@/components/ui/button/Button';
+import CopyButton from '@/components/ui/button/CopyButton';
 
 interface ContactBadgeProps {
   data: Partial<ContactBadgeFields>;
@@ -40,7 +40,7 @@ const ContactBadge = ({ data }: ContactBadgeProps) => {
 
   return (
     <>
-      <Card onLongPress={handleLongPress} style={styles.container}>
+      <Card pressable onLongPress={handleLongPress} style={styles.container}>
         <Image
           source={{ uri: profilePicture }}
           style={styles.avatar}
@@ -61,11 +61,17 @@ const ContactBadge = ({ data }: ContactBadgeProps) => {
           </View>
 
           <Text style={styles.company}>{company}</Text>
-
-          <ActionButton
-            onPress={() => setShowBottomSheet(true)}
-            text='Actions'
-          />
+          <View style={styles.actionContainer}>
+            <Button
+              variant='text'
+              onPress={() => setShowBottomSheet(true)}
+              title='Actions'
+              size='sm'
+              style={{
+                alignSelf: 'flex-end',
+              }}
+            />
+          </View>
         </View>
       </Card>
 
@@ -116,6 +122,7 @@ const styles = StyleSheet.create({
     fontWeight: typography.medium,
     color: colors.textTertiary,
   },
+  actionContainer: { flexDirection: 'row', justifyContent: 'flex-end' },
 });
 
 export default ContactBadge;

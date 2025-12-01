@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { CalendarEventFields } from '@/types/chat.types';
-import { Text, StyleSheet, View, Pressable } from 'react-native';
+import { Text, StyleSheet, View } from 'react-native';
 import { colors, radius, spacing, typography } from '@/theme/tokens';
 import { Entypo, FontAwesome, MaterialIcons } from '@expo/vector-icons';
 import { format, parseISO } from 'date-fns';
@@ -8,6 +8,7 @@ import { hapticImpact } from '@/utils/haptics';
 import { ImpactFeedbackStyle } from 'expo-haptics';
 import CalendarBottomSheet from '@/components/ui/bottom-sheet/CalendarBottomSheet';
 import Card from '@/components/ui/Card';
+import Button from '@/components/ui/button/Button';
 interface CalendarEventProps {
   data: Partial<CalendarEventFields>;
 }
@@ -15,6 +16,7 @@ interface CalendarEventProps {
 const CalendarEvent = ({ data }: CalendarEventProps) => {
   const { title, date, time, status } = data;
   const [showBottomSheet, setShowBottomSheet] = useState(false);
+  const isConfirmed = status === 'CONFIRMED';
 
   const statusStyle = status ? statusConfig[status] : statusConfig.PROPOSED;
   const formattedDate = format(parseISO(date || ''), 'MMMM do');
@@ -27,8 +29,8 @@ const CalendarEvent = ({ data }: CalendarEventProps) => {
   return (
     <>
       <Card
-        onLongPress={status === 'CONFIRMED' ? handleLongPress : undefined}
-        style={styles.container}
+        onLongPress={isConfirmed ? handleLongPress : undefined}
+        pressable={isConfirmed}
       >
         <Text style={styles.title}>{title}</Text>
 
@@ -52,16 +54,12 @@ const CalendarEvent = ({ data }: CalendarEventProps) => {
             </Text>
           </View>
           {status === 'CONFIRMED' && (
-            <Pressable
-              style={({ pressed }) => [
-                styles.buttonPrimary,
-                pressed && styles.buttonPressed,
-              ]}
+            <Button
+              variant='text'
               onPress={() => setShowBottomSheet(true)}
-              onPressIn={() => hapticImpact(ImpactFeedbackStyle.Light)}
-            >
-              <Text style={styles.buttonText}>Actions</Text>
-            </Pressable>
+              title='Actions'
+              size='sm'
+            />
           )}
         </View>
       </Card>
@@ -76,17 +74,6 @@ const CalendarEvent = ({ data }: CalendarEventProps) => {
 };
 
 const styles = StyleSheet.create({
-  container: {
-    backgroundColor: colors.cardBackground,
-    borderRadius: radius.xl,
-    paddingHorizontal: spacing.md,
-    paddingTop: spacing.md,
-    paddingBottom: spacing.sm,
-    borderWidth: 1,
-    borderColor: colors.cardBorder,
-    marginTop: spacing.md,
-  },
-
   icon: {
     fontSize: typography.xl,
     marginRight: spacing.sm,
@@ -136,26 +123,10 @@ const styles = StyleSheet.create({
     fontWeight: typography.semibold,
   },
 
-  buttonPrimary: {
-    backgroundColor: 'transparent',
-    padding: spacing.sm,
-    borderRadius: radius.full,
-    justifyContent: 'center',
-    alignSelf: 'flex-end',
-  },
-
-  buttonText: {
-    textDecorationColor: 'black',
-    textDecorationLine: 'underline',
-  },
-
-  buttonPressed: {
-    opacity: 0.8,
-  },
-
   footer: {
     flexDirection: 'row',
     justifyContent: 'space-between',
+    alignItems: 'center',
   },
 });
 

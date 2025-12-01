@@ -7,6 +7,7 @@ import * as Contacts from 'expo-contacts';
 import BaseBottomSheet from '@/components/ui/bottom-sheet/BaseBottomSheet';
 import BottomSheetOption from '@/components/ui/bottom-sheet/BottomSheetOption';
 import * as Linking from 'expo-linking';
+import Button from '../button/Button';
 
 interface ContactBottomSheetProps {
   name?: string;
@@ -112,7 +113,7 @@ const ContactBottomSheet = ({
           style={styles.avatar}
           contentFit='cover'
         />
-        <View style={styles.info}>
+        <View>
           <Text style={styles.title}>{name}</Text>
           <Pressable onPress={handleEmailPress}>
             <Text style={styles.email}>{email}</Text>
@@ -138,9 +139,13 @@ const ContactBottomSheet = ({
         />
       </View>
 
-      <Pressable style={styles.cancelButton} onPress={close}>
-        <Text style={styles.cancelButtonText}>Cancel</Text>
-      </Pressable>
+      <Button
+        variant='outline'
+        customColors={{ text: 'black', border: colors.cardBorder }}
+        size='lg'
+        title='Cancel'
+        onPress={close}
+      />
     </BaseBottomSheet>
   );
 };
@@ -159,9 +164,6 @@ const styles = StyleSheet.create({
     width: 56,
     height: 56,
     borderRadius: radius.full,
-  },
-  info: {
-    flex: 1,
   },
   title: {
     fontSize: typography.xl,
@@ -182,17 +184,6 @@ const styles = StyleSheet.create({
   options: {
     gap: spacing.md,
     marginBottom: spacing['2xl'],
-  },
-  cancelButton: {
-    backgroundColor: colors.backgroundSecondary,
-    padding: spacing.lg,
-    borderRadius: radius.lg,
-    alignItems: 'center',
-  },
-  cancelButtonText: {
-    fontSize: typography.base,
-    fontWeight: typography.semibold,
-    color: colors.textSecondary,
   },
 });
 

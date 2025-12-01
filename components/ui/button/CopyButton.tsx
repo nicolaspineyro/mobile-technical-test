@@ -1,10 +1,8 @@
 import React from 'react';
-import { StyleSheet, Pressable } from 'react-native';
 import { useClipboard } from '@/hooks/useClipboard';
 import { typography, colors } from '@/theme/tokens';
-import { hapticImpact } from '@/utils/haptics';
 import { Feather } from '@expo/vector-icons';
-import { ImpactFeedbackStyle } from 'expo-haptics';
+import IconButton from './IconButton';
 
 interface CopyButtonProps {
   value: string;
@@ -24,24 +22,19 @@ const CopyButton = ({ value, successMessage }: CopyButtonProps) => {
   };
 
   return (
-    <Pressable
-      style={({ pressed }) => [pressed && styles.pressed]}
-      onPressIn={() => hapticImpact(ImpactFeedbackStyle.Light)}
+    <IconButton
+      variant='ghost'
+      icon={
+        <Feather
+          name={isCopied ? 'check' : 'copy'}
+          size={typography.lg}
+          color={isCopied ? colors.success : colors.textTertiary}
+        />
+      }
+      size='sm'
       onPress={handleCopy}
-    >
-      <Feather
-        name={isCopied ? 'check' : 'copy'}
-        size={typography.lg}
-        color={isCopied ? colors.success : colors.textTertiary}
-      />
-    </Pressable>
+    />
   );
 };
-
-const styles = StyleSheet.create({
-  pressed: {
-    opacity: 0.8,
-  },
-});
 
 export default React.memo(CopyButton);
