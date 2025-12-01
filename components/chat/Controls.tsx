@@ -54,15 +54,14 @@ const Controls = ({
             colors={maskColors as any}
             locations={locations as any}
             start={{ x: 0, y: 0 }}
-            end={{ x: 0, y: 1 }}
+            end={{ x: 0, y: 0.8 }}
             style={StyleSheet.absoluteFill}
           />
         }
       >
         <BlurView
-          tint='light'
           intensity={100}
-          style={StyleSheet.absoluteFill}
+          style={[StyleSheet.absoluteFill]}
           experimentalBlurMethod={
             Platform.OS === 'android' ? 'dimezisBlurView' : 'none'
           }

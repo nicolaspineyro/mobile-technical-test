@@ -43,7 +43,7 @@ const ChatHeader = ({ isConnected, error }: ChatHeaderProps) => {
           <LinearGradient
             locations={locations as any}
             colors={colors as any}
-            start={{ x: 0, y: 0.5 }}
+            start={{ x: 0, y: 0.8 }}
             end={{ x: 0, y: 1 }}
             style={StyleSheet.absoluteFill}
           />
@@ -101,7 +101,7 @@ const styles = StyleSheet.create({
     left: 0,
     right: 0,
     zIndex: 10,
-    height: Platform.OS === 'android' ? height * 0.11 : height * 0.17,
+    height: Platform.OS === 'android' ? height * 0.11 : height * 0.145,
   },
   container: {
     flex: 1,
@@ -110,7 +110,8 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
-    padding: spacing.lg,
+    paddingHorizontal: spacing.lg,
+    paddingTop: spacing.sm,
   },
 
   dot: {
