@@ -101,7 +101,7 @@ const styles = StyleSheet.create({
     left: 0,
     right: 0,
     zIndex: 10,
-    height: Platform.OS === 'android' ? height * 0.11 : height * 0.145,
+    height: Platform.OS === 'android' ? height * 0.11 : height * 0.135,
   },
   container: {
     flex: 1,
@@ -111,9 +111,7 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
     alignItems: 'center',
     paddingHorizontal: spacing.lg,
-    paddingTop: spacing.sm,
   },
-
   dot: {
     width: 10,
     height: 10,

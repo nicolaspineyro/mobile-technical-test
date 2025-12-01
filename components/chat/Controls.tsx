@@ -108,7 +108,7 @@ const styles = StyleSheet.create({
     left: 0,
     right: 0,
     zIndex: 11,
-    height: Platform.OS === 'android' ? height * 0.19 : height * 0.17,
+    height: Platform.OS === 'android' ? height * 0.19 : height * 0.165,
   },
 
   controls: {

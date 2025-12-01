@@ -14,7 +14,7 @@ interface ChatListProps {
   isLoading: boolean;
 }
 
-export const HEADER_HEIGHT = height * 0.09;
+export const HEADER_HEIGHT = height * 0.065;
 export const CONTROLS_HEIGHT =
   Platform.OS === 'android' ? height * 0.2 : height * 0.14;
 
