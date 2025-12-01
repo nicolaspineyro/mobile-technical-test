@@ -4,13 +4,15 @@ import { colors, radius, spacing, typography } from '@/theme/tokens';
 import { AntDesign, FontAwesome5 } from '@expo/vector-icons';
 import Card from './Card';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
+import Button from './button/Button';
+import { navigate } from 'expo-router/build/global-state/routing';
 
-interface DemoEmptyStateProps {
-  setShowEmptyState: (show: boolean) => void;
-}
-
-const DemoEmptyState = ({ setShowEmptyState }: DemoEmptyStateProps) => {
+const DemoEmptyState = () => {
   const insets = useSafeAreaInsets();
+  const handleStart = () => {
+    navigate('/chat');
+  };
+
   return (
     <ScrollView
       style={[
@@ -64,13 +66,17 @@ const DemoEmptyState = ({ setShowEmptyState }: DemoEmptyStateProps) => {
             </Text>
           </View>
         </Card>
+
         <Text style={styles.text}>Are you ready?</Text>
-        <Pressable
-          style={styles.start}
-          onPress={() => setShowEmptyState(false)}
-        >
-          <Text style={styles.startText}>Start Demo</Text>
-        </Pressable>
+        <Button
+          onPress={handleStart}
+          title='Start'
+          customColors={{
+            background: colors.userBubble,
+            text: colors.background,
+          }}
+          size='lg'
+        />
       </View>
     </ScrollView>
   );
@@ -107,15 +113,14 @@ const styles = StyleSheet.create({
     flexGrow: 1,
     justifyContent: 'center',
     alignItems: 'center',
+    paddingHorizontal: spacing['3xl'],
   },
   card: {
     flexDirection: 'row',
     gap: spacing.lg,
     alignItems: 'center',
     padding: spacing.lg,
-    width: '90%',
     alignSelf: 'center',
-    borderRadius: radius.lg,
   },
 
   cardText: {
