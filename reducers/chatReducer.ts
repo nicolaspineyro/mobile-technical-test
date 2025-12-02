@@ -29,14 +29,6 @@ function validateMessageExists(
   return messageExists;
 }
 
-function buildTextFromChunks(chunks: Record<number, string>): string {
-  const sortedIndices = Object.keys(chunks)
-    .map(Number)
-    .sort((a, b) => a - b);
-
-  return sortedIndices.map((index) => chunks[index]).join('');
-}
-
 export function chatReducer(state: ChatState, action: ChatAction): ChatState {
   switch (action.type) {
     case 'EVENT_RECEIVED': {
@@ -48,7 +40,6 @@ export function chatReducer(state: ChatState, action: ChatAction): ChatState {
             role: event.role,
             status: 'building',
             textContent: '',
-            textChunks: {},
             timeStamp: Date.now(),
           };
 
@@ -69,17 +60,9 @@ export function chatReducer(state: ChatState, action: ChatAction): ChatState {
             messages: state.messages.map((message) => {
               if (message.id !== event.messageId) return message;
 
-              const updatedChunks = {
-                ...(message.textChunks ?? {}),
-                [event.index]: event.chunk,
-              };
-
-              const textContent = buildTextFromChunks(updatedChunks);
-
               return {
                 ...message,
-                textChunks: updatedChunks,
-                textContent,
+                textContent: message.textContent + event.chunk,
               };
             }),
           };
