@@ -1,28 +1,13 @@
-import React, { useState } from 'react';
-import {
-  View,
-  StyleSheet,
-  StatusBar,
-  Platform,
-  KeyboardAvoidingView,
-  ActivityIndicator,
-} from 'react-native';
+import React from 'react';
+import { View, StyleSheet, ActivityIndicator } from 'react-native';
 import { useFonts } from 'expo-font';
-import { useChat } from '@/hooks/useChat';
-import { ChatHeader } from '@/components/chat/ChatHeader';
-import Controls from '@/components/chat/Controls';
-import ChatList from '@/components/chat/ChatList';
-import DemoEmptyState from '@/components/ui/DemoEmptyState';
 import { colors } from '@/theme/tokens';
+import DemoEmptyState from '@/components/ui/DemoEmptyState';
 
-export default function ChatScreen() {
+export default function Index() {
   const [fontsLoaded] = useFonts({
     'PlayfairDisplay-Medium': require('../assets/fonts/PlayfairDisplay-Medium.ttf'),
   });
-
-  const { messages, isConnected, error, reconnect, disconnect, reset } =
-    useChat();
-  const [showEmptyState, setShowEmptyState] = useState(true);
 
   if (!fontsLoaded) {
     return (
@@ -33,27 +18,9 @@ export default function ChatScreen() {
   }
 
   return (
-    <KeyboardAvoidingView
-      style={{ flex: 1 }}
-      behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
-    >
-      <View style={[styles.container]}>
-        <StatusBar barStyle='dark-content' />
-        {showEmptyState ? (
-          <DemoEmptyState setShowEmptyState={setShowEmptyState} />
-        ) : (
-          <>
-            <ChatHeader isConnected={isConnected} error={error} />
-            <ChatList messages={messages} />
-            <Controls
-              reconnect={reconnect}
-              reset={reset}
-              disconnect={disconnect}
-            />
-          </>
-        )}
-      </View>
-    </KeyboardAvoidingView>
+    <View style={[styles.container]}>
+      <DemoEmptyState />
+    </View>
   );
 }
 

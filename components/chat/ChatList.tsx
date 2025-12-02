@@ -1,20 +1,24 @@
 import React, { useCallback, useRef, useState } from 'react';
-import { Platform } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { FlashList, FlashListRef } from '@shopify/flash-list';
 
 import { Message } from '@/types/chat.types';
 import { spacing } from '@/theme/tokens';
 import MessageBubble from './list/MessageBubble';
+import { ActivityIndicator, Dimensions, Platform, View } from 'react-native';
+
+const { height } = Dimensions.get('window');
 
 interface ChatListProps {
   messages: Message[];
+  isLoading: boolean;
 }
 
-export const HEADER_HEIGHT = 70;
-export const CONTROLS_HEIGHT = Platform.OS === 'android' ? 150 : 100;
+export const HEADER_HEIGHT = height * 0.065;
+export const CONTROLS_HEIGHT =
+  Platform.OS === 'android' ? height * 0.2 : height * 0.14;
 
-const ChatList = ({ messages }: ChatListProps) => {
+const ChatList = ({ messages, isLoading }: ChatListProps) => {
   const insets = useSafeAreaInsets();
   const flashListRef = useRef<FlashListRef<Message>>(null);
   const [isAtBottom, setIsAtBottom] = useState(true);
@@ -22,7 +26,10 @@ const ChatList = ({ messages }: ChatListProps) => {
   const renderMessages = useCallback(({ item }: { item: Message }) => {
     return <MessageBubble item={item} />;
   }, []);
-  const keyExtractor = useCallback((item: Message) => item.id, []);
+  const keyExtractor = useCallback(
+    (item: Message, i: number) => `${item.id}-${i}`,
+    []
+  );
 
   const handleScroll = (e: any) => {
     const { contentOffset, contentSize, layoutMeasurement } = e.nativeEvent;
@@ -45,6 +52,13 @@ const ChatList = ({ messages }: ChatListProps) => {
     }
   };
 
+  const FooterComponent = () =>
+    isLoading ? (
+      <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
+        <ActivityIndicator />
+      </View>
+    ) : undefined;
+
   return (
     <FlashList
       ref={flashListRef}
@@ -60,6 +74,7 @@ const ChatList = ({ messages }: ChatListProps) => {
       keyExtractor={keyExtractor}
       showsVerticalScrollIndicator={true}
       onContentSizeChange={scrollToBottom}
+      ListFooterComponent={FooterComponent}
     />
   );
 };

@@ -72,7 +72,7 @@ const styles = StyleSheet.create({
     justifyContent: 'flex-end',
   },
   bubble: {
-    borderRadius: radius.xl,
+    borderRadius: radius.md,
   },
   userBubble: {
     maxWidth: '75%',

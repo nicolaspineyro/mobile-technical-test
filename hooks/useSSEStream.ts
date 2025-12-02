@@ -1,5 +1,5 @@
 import { SSEEvent, SSEEventType } from '@/types/chat.types';
-import { useCallback, useEffect, useRef } from 'react';
+import { useCallback, useEffect, useRef, useState } from 'react';
 import { AppState } from 'react-native';
 import EventSource from 'react-native-sse';
 
@@ -20,6 +20,7 @@ export function useSSEStream({
 }: useSSEStreamProps) {
   const eventSourceRef = useRef<EventSource | null>(null);
   const callbacksRef = useRef({ onEvent, onError, onConnectionChange });
+  const [isLoading, setIsLoading] = useState(false);
 
   const disconnect = useCallback(() => {
     if (eventSourceRef.current) {
@@ -36,6 +37,7 @@ export function useSSEStream({
 
   const connect = useCallback(() => {
     disconnect();
+    setIsLoading(true);
 
     console.log('connecting to sse...');
 
@@ -57,6 +59,7 @@ export function useSSEStream({
 
     const handleOpen = () => {
       console.log('connection established');
+      setIsLoading(false);
       callbacksRef.current.onConnectionChange?.(true);
     };
 
@@ -90,16 +93,17 @@ export function useSSEStream({
   }, [onEvent, onError, onConnectionChange]);
 
   useEffect(() => {
+    connect();
     return () => {
       disconnect();
     };
-  }, []);
+  }, [connect, disconnect]);
 
   useEffect(() => {
     const subscription = AppState.addEventListener('change', (nextAppState) => {
       if (nextAppState === 'active') {
         console.log('app should reconnect again in prod...');
-        // connect();
+        connect();
       } else if (nextAppState === 'background' || nextAppState === 'inactive') {
         console.log('app in background close sse...');
         disconnect();
@@ -111,5 +115,5 @@ export function useSSEStream({
     };
   }, [connect, disconnect]);
 
-  return { reconnect: connect, disconnect };
+  return { reconnect: connect, disconnect, isLoading };
 }

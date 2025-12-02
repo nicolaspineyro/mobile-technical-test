@@ -4,7 +4,7 @@ export const colors = {
   primaryLight: '#818CF8',
 
   // Backgrounds
-  background: '#F9F8F6',
+  background: '#F0F0F0',
   backgroundSecondary: '#F9FAFB',
 
   // Text
@@ -17,7 +17,7 @@ export const colors = {
   agentBubble: '#F1F5F9',
 
   // Components
-  cardBackground: '#FFFFFF',
+  cardBackground: '#FDFDFD',
   cardBorder: '#E8E8E8',
 
   // Status colors

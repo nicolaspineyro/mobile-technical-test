@@ -1,5 +1,5 @@
 import React from 'react';
-import { StyleSheet, Text, Alert, Pressable, View, Share } from 'react-native';
+import { StyleSheet, Text, Alert, View, Share } from 'react-native';
 
 import { format, parseISO } from 'date-fns';
 import * as Calendar from 'expo-calendar';
@@ -7,7 +7,8 @@ import { Feather, MaterialIcons } from '@expo/vector-icons';
 
 import BaseBottomSheet from './BaseBottomSheet';
 import BottomSheetOption from './BottomSheetOption';
-import { colors, radius, spacing, typography } from '@/theme/tokens';
+import { colors, spacing, typography } from '@/theme/tokens';
+import Button from '../button/Button';
 
 interface CalendarBottomSheetProps {
   title?: string;
@@ -111,9 +112,13 @@ const CalendarBottomSheet = ({
         />
       </View>
 
-      <Pressable style={styles.cancelButton} onPress={close}>
-        <Text style={styles.cancelButtonText}>Cancel</Text>
-      </Pressable>
+      <Button
+        variant='outline'
+        customColors={{ text: 'black', border: colors.cardBorder }}
+        title='Cancel'
+        onPress={close}
+        size='lg'
+      />
     </BaseBottomSheet>
   );
 };
@@ -135,19 +140,6 @@ const styles = StyleSheet.create({
   options: {
     gap: spacing.md,
     marginBottom: spacing['2xl'],
-  },
-
-  cancelButton: {
-    backgroundColor: colors.backgroundSecondary,
-    padding: spacing.lg,
-    borderRadius: radius.lg,
-    alignItems: 'center',
-  },
-
-  cancelButtonText: {
-    fontSize: typography.base,
-    fontWeight: typography.semibold,
-    color: colors.textSecondary,
   },
 });
 

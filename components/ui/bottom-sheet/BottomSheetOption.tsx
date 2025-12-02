@@ -1,7 +1,8 @@
 import React from 'react';
-import { Pressable, View, Text, StyleSheet } from 'react-native';
+import { View, Text, StyleSheet } from 'react-native';
 import { AntDesign } from '@expo/vector-icons';
 import { colors, spacing, radius, typography } from '@/theme/tokens';
+import Pressable from '../button/Pressable';
 
 interface BottomSheetOptionProps {
   icon: React.ReactNode;
@@ -19,10 +20,7 @@ const BottomSheetOption = ({
   onPress,
 }: BottomSheetOptionProps) => {
   return (
-    <Pressable
-      style={({ pressed }) => [styles.option, pressed && styles.optionPressed]}
-      onPress={onPress}
-    >
+    <Pressable style={styles.option} onPress={onPress}>
       <View
         style={[styles.optionIcon, { backgroundColor: iconBackgroundColor }]}
       >
@@ -42,7 +40,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     padding: spacing.md,
-    borderRadius: radius.lg,
+    borderRadius: radius.xl,
     backgroundColor: colors.backgroundSecondary,
     borderWidth: 1,
     borderColor: colors.cardBorder,
